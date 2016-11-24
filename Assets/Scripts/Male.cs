@@ -1,0 +1,77 @@
+﻿using UnityEngine;
+using System.Collections;
+
+public class Male : MonoBehaviour, Human.HumanDelegate
+{
+
+    public GameObject tsAnimation;
+
+    public float tsRate = 0.01f;
+
+    private Human human;
+    private Animator animator;
+
+    // インスタンス化した時点でないと困るものを初期化（手動呼び出し）
+    public void Initialize()
+    {
+        human.Sex = Global.Sex.Male;
+        human.ColoredFullName = "<color=#00FFFF>" + human.FullName + "</color>";
+    }
+
+    void Awake()
+    {
+        human = GetComponent<Human>();
+        animator = GetComponent<Animator>();
+
+        human.humanDelegate = this;
+    }
+
+    void Start()
+    {
+        StartCoroutine(JudgeTs());
+    }
+
+    // TS判定
+    IEnumerator JudgeTs()
+    {
+        yield return new WaitForSeconds(1);
+
+        while (true)
+        {
+            if (Random.value < tsRate)
+            {
+                TsStart();
+            }
+
+            yield return new WaitForSeconds(1);
+        }
+    }
+
+    public void TsStart(string tsReason = null)
+    {
+        iTween.Stop(gameObject);
+
+        GameObject tsObj = (GameObject)Instantiate(tsAnimation, gameObject.transform.position, gameObject.transform.rotation);
+        TsAnimation ts = tsObj.GetComponent<TsAnimation>();
+        ts.transform.parent = gameObject.transform;
+
+        string maleColoredFullName = human.ColoredFullName;
+
+        Female female = gameObject.AddComponent<Female>();
+        female.TsReason = (tsReason == null) ? Util.RandomElment(Global.TsReasons) : tsReason;
+        female.Initialize();
+
+        animator.SetInteger("Sex", (int)Global.Sex.Female);
+        
+        Global.Log.High(string.Format("{0}は{1}ため女の子になった", maleColoredFullName, female.TsReason));
+
+        Destroy(this);
+    }
+
+    public Human DecideLover()
+    {
+        Female lover = Util.RandomElment(FindObjectsOfType<Female>());
+        if (lover == null) return null;
+        return lover.GetComponent<Human>();
+    }
+}

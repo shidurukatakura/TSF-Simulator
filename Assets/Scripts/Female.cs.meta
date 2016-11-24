@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 2f6ea44c7a5a8294184a9dc8f2323e7a
+timeCreated: 1477826269
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - pHuman: {fileID: 1000012825734766, guid: 0b8fb3bab0400354d806363aae452f96, type: 2}
+  - bearAnimation: {fileID: 1000010778065070, guid: 48f0b00d6d6a25240967b44e5962b631,
+      type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
