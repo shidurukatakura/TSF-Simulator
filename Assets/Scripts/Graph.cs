@@ -166,8 +166,11 @@ public class Graph : MonoBehaviour {
         int i = 0;
         foreach (float value in source.Values)
         {
-            GL.Vertex3(1.0f / graphScale * i, prev / source.Max / 4 + 0.7f, 0.0f);
-            GL.Vertex3(1.0f / graphScale * (i + 1), value / source.Max / 4 + 0.7f, 1.0f);
+            if (i > 0)
+            {
+                GL.Vertex3(1.0f / graphScale * i, prev / source.Max / 4 + 0.7f, 0.0f);
+                GL.Vertex3(1.0f / graphScale * (i + 1), value / source.Max / 4 + 0.7f, 1.0f);
+            }
             i++;
             prev = value;
         }
@@ -223,7 +226,7 @@ public class Graph : MonoBehaviour {
         earthGraphSource = new SimpleGraphSource()
         {
             Max = earth.maxHp * 1.1f,
-            Color = Color.green,
+            Color = new Color(180.0f / 255, 1.0f, 30.0f / 255),
             Format = "地球環境：{0:0}",
         };
     }

@@ -75,6 +75,8 @@ public class Female : MonoBehaviour, Human.HumanDelegate {
                 relation = "兄弟で";
             }
 
+            human.statusSubject.OnNext("<color=#FFAAFF>交配不可</color>");
+
             Global.Log.Middle(string.Format("{0}と{1}は{2}交配したが子をなせなかった", human.ColoredFullName, cHuman.ColoredFullName, relation));
 
             return;
@@ -102,6 +104,8 @@ public class Female : MonoBehaviour, Human.HumanDelegate {
         animator.SetTrigger("Bear");
 
         latestBaerTime = Time.time;
+
+        iTween.ScaleFrom(childObj, iTween.Hash("name", "birth", "x", 0.5f, "y", 0.5f, "time", 0.75f, "easeType", iTween.EaseType.linear));
 
         Global.Log.Low(string.Format("{0}と{1}の子{2}が誕生した", human.ColoredFullName, father.ColoredFullName, child.ColoredFullName));
     }

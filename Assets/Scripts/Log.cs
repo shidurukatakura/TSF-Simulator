@@ -13,6 +13,7 @@ public class Log : MonoBehaviour {
     void Awake()
     {
         log = GetComponent<Text>();
+        log.text = "";
     }
 
     public void High(string message)

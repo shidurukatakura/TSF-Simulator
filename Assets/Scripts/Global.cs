@@ -6,6 +6,7 @@ public class Global : MonoBehaviour {
     /* 定数 */
     public enum Sex { Female = 0, Male = 1 }
     public static int GENE_LENGTH = 8;
+    public static int INITIAL_HUMAN_COUNT = 10;
 
     /* static変数 */
     public static int nextHumanId = 1;
@@ -23,11 +24,16 @@ public class Global : MonoBehaviour {
     public static string[] FirstNames { get; private set; }
     public static string[] TsReasons { get; private set; }
 
+    public bool GameStarted { get; private set; }
+
     public bool GameOver { get; private set; }
 
 
     void Awake()
     {
+        GameStarted = false;
+        Time.timeScale = 0;
+
         World = GameObject.Find("World");
         Log = GameObject.Find("Log").GetComponent<Log>();
         Graph = FindObjectOfType<Graph>();
@@ -35,7 +41,15 @@ public class Global : MonoBehaviour {
 
         ReadData();
         InspectWorld();
-        StartCoroutine(Populate(10));
+    }
+
+    void StartGame()
+    {
+        GameStarted = true;
+        Time.timeScale = 5;
+        //Time.timeScale = 1;
+
+        StartCoroutine(Populate(INITIAL_HUMAN_COUNT));
         StartCoroutine(CheckDecline());
     }
 
@@ -114,18 +128,27 @@ public class Global : MonoBehaviour {
 
     void Update()
     {
-        Human[] humans = (Human[])FindObjectsOfType(typeof(Human));
-        if (humans.Length == 0 && !GameOver)
+        if (GameStarted)
         {
-            Global.Log.High("そしてだれもいなくなった・・・");
-            GameOver = true;
-            //StartCoroutine( Util.DelayMethod(5, () => 
-            //{
-            //    GameOver = false;
-            //    Graph.Reset();
-            //    Earth.Reset();
-            //    StartCoroutine(Populate(10));
-            //}));
+            Human[] humans = (Human[])FindObjectsOfType(typeof(Human));
+            if (humans.Length == 0 && !GameOver)
+            {
+                Global.Log.High("そしてだれもいなくなった・・・");
+                GameOver = true;
+                GameStarted = false;
+                //StartCoroutine( Util.DelayMethod(5, () => 
+                //{
+                //    GameOver = false;
+                //    Graph.Reset();
+                //    Earth.Reset();
+                //    StartCoroutine(Populate(10));
+                //}));
+            }
+
+        } else {
+            if (Input.GetKey(KeyCode.Space)) {
+                StartGame();
+            }
         }
     }
 

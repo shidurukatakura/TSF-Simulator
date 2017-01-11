@@ -6,7 +6,7 @@ public class Male : MonoBehaviour, Human.HumanDelegate
 
     public GameObject tsAnimation;
 
-    public float tsRate = 0.01f;
+    public float tsRate = 0.06f;
 
     private Human human;
     private Animator animator;
@@ -38,7 +38,12 @@ public class Male : MonoBehaviour, Human.HumanDelegate
 
         while (true)
         {
-            if (Random.value < tsRate)
+            int humanCount = FindObjectsOfType<Human>().Length;
+            //float adjustRate = -1.0f / (Mathf.Pow(1.3f, -(humanCount / 4.0f + 12)) + 1.05f); // -1/(1.3^(-(x/4+12)))+1.05
+            float adjustRate = 0.9f / (1 + Mathf.Exp(humanCount / 6.0f - 5)) + 0.1f;
+            float adjustedTsRate = tsRate * adjustRate;
+            //Debug.Log("hc: " + humanCount + " rate: " + adjustRate);
+            if (Random.value < adjustedTsRate)
             {
                 TsStart();
             }
@@ -49,7 +54,9 @@ public class Male : MonoBehaviour, Human.HumanDelegate
 
     public void TsStart(string tsReason = null)
     {
-        iTween.Stop(gameObject);
+        iTween.Stop(gameObject, "move");
+        iTween.Stop(gameObject, "birth");
+        gameObject.transform.localScale = new Vector3(3, 3, 1);
 
         GameObject tsObj = (GameObject)Instantiate(tsAnimation, gameObject.transform.position, gameObject.transform.rotation);
         TsAnimation ts = tsObj.GetComponent<TsAnimation>();

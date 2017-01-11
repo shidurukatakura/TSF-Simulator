@@ -18,7 +18,7 @@ public class Human : MonoBehaviour {
 
     /* インスペクタで設定する設定値 */
     public float speed = 1.5f;
-    public int life = 5;
+    public int life = 15;
 
     /* プロパティ */
     public int Id { get; set; }
@@ -36,7 +36,7 @@ public class Human : MonoBehaviour {
 
     public float Age { get { return Time.time - BirthTime; } }
 
-    private Subject<string> statusSubject = new Subject<string>();
+    public Subject<string> statusSubject = new Subject<string>();
 
     void Awake()
     {
@@ -70,6 +70,7 @@ public class Human : MonoBehaviour {
         // ランダムに移動するか、異性の方に移動するかを決める(ランダム移動率：0.43+e^(-0.13(x+10))、xは人口)
         int humanCount = FindObjectsOfType<Human>().Length;
         float randomRate = 0.43f + Mathf.Exp(-0.13f * (humanCount + 10));
+        //float randomRate = 0.5f;
         bool randomMove = Random.value < randomRate;
         if (!randomMove)
         {
@@ -96,7 +97,7 @@ public class Human : MonoBehaviour {
         // 移動
         iTween.MoveTo(gameObject, iTween.Hash("position", Destination, "speed", speed,
             "easetype", iTween.EaseType.easeInOutSine, "oncomplete", "OnMoveCompleted",
-            "oncompletetarget", gameObject));
+            "oncompletetarget", gameObject, "name", "move"));
     }
 
     void OnMoveCompleted()
@@ -169,18 +170,18 @@ public class Human : MonoBehaviour {
 
     IEnumerator CheckMutateGene()
     {
-        yield return new WaitForSeconds(10);
-
         int count = 0;
+
+        //yield return new WaitForSeconds(2);
 
         while (true)
         {
-            float probabirity = 1 / (2 * (1 + 3 * Mathf.Exp(-count / 2 + 4))); // シグモイド関数（ロジスティック曲線）
+            float probabirity = 1 / (2 + 6 * Mathf.Exp(9 - count / 2)) - 0.003034f; // シグモイド関数（ロジスティック曲線）
             count++;
             if (Random.value < probabirity)
             {
                 Gene = MutateGene(Gene);
-                statusSubject.OnNext("Mutate");
+                statusSubject.OnNext("突然変異");
             }
 
             yield return new WaitForSeconds(1);
