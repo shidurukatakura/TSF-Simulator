@@ -39,9 +39,10 @@ public class Male : MonoBehaviour, Human.HumanDelegate
         while (true)
         {
             int humanCount = FindObjectsOfType<Human>().Length;
-            //float adjustRate = -1.0f / (Mathf.Pow(1.3f, -(humanCount / 4.0f + 12)) + 1.05f); // -1/(1.3^(-(x/4+12)))+1.05
             float adjustRate = 0.9f / (1 + Mathf.Exp(humanCount / 6.0f - 5)) + 0.1f;
+            //float adjustRate = 0.9f / (1 + Mathf.Exp(humanCount / 6.0f - 5)) + 0.1f;
             float adjustedTsRate = tsRate * adjustRate;
+            //float adjustedTsRate = tsRate;
             //Debug.Log("hc: " + humanCount + " rate: " + adjustRate);
             if (Random.value < adjustedTsRate)
             {

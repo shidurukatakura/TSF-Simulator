@@ -46,8 +46,7 @@ public class Global : MonoBehaviour {
     void StartGame()
     {
         GameStarted = true;
-        Time.timeScale = 5;
-        //Time.timeScale = 1;
+        Time.timeScale = 10;
 
         StartCoroutine(Populate(INITIAL_HUMAN_COUNT));
         StartCoroutine(CheckDecline());
