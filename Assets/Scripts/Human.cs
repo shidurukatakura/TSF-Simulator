@@ -177,7 +177,7 @@ public class Human : MonoBehaviour {
             //float probabirity = 1 / (2 + 6 * Mathf.Exp(9 - count / 2)) - 0.003034f; // シグモイド関数（ロジスティック曲線）
             //float probabirity = 1 / (2 + 6 * Mathf.Exp(-(count - 25) / 3)) - 0.003034f; // シグモイド関数（ロジスティック曲線）
             //float probabirity = 1 / (2 + 6 * Mathf.Exp(-(count - 22) / 3)) - 0.003034f; // シグモイド関数（ロジスティック曲線）
-            float probabirity = 1 / (1.5f + 6 * Mathf.Exp(-(count - 22) / 3)) - 0.003034f; // シグモイド関数（ロジスティック曲線）
+            float probabirity = 1 / (1.5f + 6 * Mathf.Exp(-(count - 22) / 3)) - 0.003039f; // シグモイド関数（ロジスティック曲線）
             count++;
             if (Random.value < probabirity)
             {
